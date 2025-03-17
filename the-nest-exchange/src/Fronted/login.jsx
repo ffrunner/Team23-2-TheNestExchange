@@ -1,11 +1,11 @@
-import React, { use, useState } from 'react';
+import React, { useState } from 'react';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleLogin = async (e) => {
+    const handleLogin = async (event) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/api/login', {

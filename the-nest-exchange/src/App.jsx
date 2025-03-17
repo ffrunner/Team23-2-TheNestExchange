@@ -51,3 +51,18 @@ app.get('/api/item-usage-reports', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+
+import React from 'react';
+import './App.css';
+import Login from './Login';
+import './Login.css'; // Import the CSS for the Login component
+
+const App = () => {
+    return (
+        <div>
+            <Login />
+        </div>
+    );
+};
+
+export default App;
