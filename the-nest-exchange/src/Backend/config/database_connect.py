@@ -1,5 +1,5 @@
 import psycopg2 
-from database_config import config
+from config.database_config import config
  
 #Function to connect postgres database 
 def connect_database():
