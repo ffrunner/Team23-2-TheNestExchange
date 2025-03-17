@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from routes import auth
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = ''
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://{user}:{password}@{host}/{database}'
 db = SQLAlchemy(app)
 
 app.register_blueprint(auth)
