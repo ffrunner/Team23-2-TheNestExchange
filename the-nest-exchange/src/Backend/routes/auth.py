@@ -15,6 +15,7 @@ def login():
     #If correct email and password, begins session and takes user to dashboard
     if user and user.check_password(password):
         session['email'] = email
+        connection.close()
         return redirect(url_for('Dashboard.jsx'))
     else:
         connection.close()
@@ -36,12 +37,26 @@ def sign_up():
         new_user = users(email=email)
         new_user.set_password(password)
         connection.session.commit()
+        connection.close()
         session['email'] = email
         return redirect(url_for('login.js'))
 
-#@auth.route('/change_password', methods = ['GET', 'POST'])
-#def change_password():
-
+#Change password function that adds new hash password
+@auth.route('/change_password', methods = ['GET', 'POST'])
+def change_password():
+    connection = connect_database()
+    email = request.form['email']
+    password = request.form['password']
+    user = users.query.filter_by(email = email).first()
+    #If correct email and password, can change password
+    if user and user.check_password(password):
+        new_password = request.form(new_password)
+        user.set_password(new_password)
+        connection.session.commit()
+        connection.close()
+    else:
+        connection.close()
+        return "Invalid credentials"
 
 #Function that logs user out and ends session
 @auth.route('/logout')
