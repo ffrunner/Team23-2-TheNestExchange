@@ -23,3 +23,35 @@ class users(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
     
+# Model for Activity Logs
+class ActivityLog(db.Model):
+    __tablename__ = "activity_log"
+    id = db.Column(db.Integer, primary_key=True)
+    action = db.Column(db.String(255))
+    timestamp = db.Column(db.DateTime, server_default=db.func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+# Model for Listings
+class Listings(db.Model):
+    __tablename__ = "listings"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255))
+    description = db.Column(db.Text)
+    is_active = db.Column(db.Boolean, default=True)
+    claimed_by = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+# Model for Disputes
+class Dispute(db.Model):
+    __tablename__ = "disputes"
+    id = db.Column(db.Integer, primary_key=True)
+    listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
+    lister_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    claimer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    resolution_status = db.Column(db.String(50))  # e.g., 'resolved', 'pending', 'dismissed'
+
+# Model for Reports
+class Report(db.Model):
+    __tablename__ = "reports"
+    id = db.Column(db.Integer, primary_key=True)
+    generated_at = db.Column(db.DateTime, server_default=db.func.now())
+    report_data = db.Column(db.JSON)  # Store various analytics data
