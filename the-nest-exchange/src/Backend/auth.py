@@ -63,3 +63,5 @@ def change_password():
 def logout():
     session.pop('email', None)
     return redirect(url_for('login.js'))
+
+
