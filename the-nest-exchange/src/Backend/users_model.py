@@ -63,8 +63,8 @@ class Dispute(db.Model):
     resolved_at = db.Column(db.DateTime, nullable=True)  # Nullable for unresolved disputes
 
 # Model for Items
-class Items(db.Model):
-    __tablename__ = "items"
+class Item(db.Model):
+    __tablename__ = 'items'
     id = db.Column(db.Integer, primary_key=True)
     is_claimed = db.Column(db.Boolean, default=False)  # Default to False
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
@@ -97,3 +97,19 @@ class Report(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     generated_at = db.Column(db.DateTime, server_default=db.func.now())
     report_data = db.Column(db.JSON)  # Store various analytics data
+
+
+# Model for Categories
+class Category(db.Model):
+    __tablename__ = "categories"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+
+#Model for tags
+class Tag(db.Model):
+    __tablename__ = 'tags'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)  # Ensure that a name is always provided
+
+

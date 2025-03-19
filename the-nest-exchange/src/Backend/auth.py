@@ -1,7 +1,6 @@
 from config.database_connect import connect_database
-from flask import Blueprint, render_template, request, session, redirect, url_for
-from models.users_model import users
-
+from flask import Blueprint, render_template, request, session, redirect, url_for,jsonify
+from users_model import users, Item, db
 
 auth = Blueprint('auth',__name__)
 
@@ -64,4 +63,29 @@ def logout():
     session.pop('email', None)
     return redirect(url_for('login.js'))
 
+@auth.route('/item', methods=['POST'])
+def create_item():
+    data = request.json
+    new_item = Item(
+        title=data['title'],
+        description=data.get('description', ''),
+        category_id=data.get('category_id'),  
+        is_active=True,
+        lister_id=data['lister_id']  
+    )
+    db.session.add(new_item)
+    db.session.commit()
+    return jsonify({"msg": "Item created successfully!", "item_id": new_item.id}), 201
+
+@auth.route('/item/<int:item_id>', methods=['PUT'])
+def update_item(item_id):
+    item = Item.query.get_or_404(item_id)
+    data = request.json
+    item.title = data.get('title', item.title)  # Update only if provided
+    item.description = data.get('description', item.description)
+    item.category_id = data.get('category_id', item.category_id)
+    item.is_active = data.get('is_active', item.is_active)
+
+    db.session.commit()
+    return jsonify({"msg": "Item updated successfully!"}), 200
 
