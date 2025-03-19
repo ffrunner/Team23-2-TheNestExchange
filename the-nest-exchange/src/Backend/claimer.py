@@ -1,6 +1,6 @@
 import json
 import redis
-from connect import get_db_connection
+from database_connect import connect_database
 
 # Configure Redis client
 redis_client = redis.Redis(host='database-1.cjm0e6m6u6vm.us-east-2.rds.amazonaws.com', port=5432, decode_responses=True)
@@ -23,7 +23,7 @@ def get_listings_by_category(category):
         return json.loads(cached)
 
     # Get a new database connection
-    conn = get_db_connection()
+    conn = connect_database()
     try:
         # Use a context manager to automatically close the cursor
         with conn.cursor() as cur:
@@ -55,7 +55,7 @@ def get_listings_by_category(category):
 # Report a given listing
 def report_listing(listing_id, reason, reported_by):
 
-    conn = get_db_connection()
+    conn = connect_database()
     try:
         with conn.cursor() as cur:
             # Check if the listing exists in the database
@@ -79,7 +79,7 @@ def report_listing(listing_id, reason, reported_by):
 # Add a claim to a listing
 def add_claim(listing_id, claimed_by, message=""):
 
-    conn = get_db_connection()
+    conn = connect_database()
     try:
         with conn.cursor() as cur:
             # Check if the listing exists and retrieve its owner
@@ -108,7 +108,7 @@ def add_claim(listing_id, claimed_by, message=""):
 # Allow user to view all claims made
 def get_claims_for_user(user_id):
 
-    conn = get_db_connection()
+    conn = connect_database()
     try:
         with conn.cursor() as cur:
             cur.execute(
@@ -127,7 +127,7 @@ def get_claims_for_user(user_id):
 # Allow item owner to view all claims for a listing
 def get_claims_for_listing(listing_id):
 
-    conn = get_db_connection()
+    conn = connect_database()
     try:
         with conn.cursor() as cur:
             cur.execute(
