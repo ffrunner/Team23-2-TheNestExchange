@@ -1,9 +1,10 @@
 from configparser import ConfigParser
 
 #Creating a parser to read config file
-def config(file= "database.ini", section="postgresql"):
-    parser = ConfigParser
-    parser.read(file)
+def config(filename= "database.ini", section="postgresql"):
+
+    parser = ConfigParser()
+    parser.read(filename)
     db = {}
     if parser.has_section(section):
         params = parser.items(section)
