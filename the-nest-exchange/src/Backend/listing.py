@@ -1,6 +1,6 @@
 import json
 import redis
-from connect import get_db_connection
+from database_connect import connect_database
 
 # Configure Redis client
 redis_client = redis.Redis(host='database-1.cjm0e6m6u6vm.us-east-2.rds.amazonaws.com', port=5432, decode_responses=True)
@@ -23,7 +23,7 @@ def get_listings_by_category(category):
         return json.loads(cached)
 
     # Get a new database connection
-    conn = get_db_connection()
+    conn = connect_database()
     try:
         # Use a context manager to automatically close the cursor
         with conn.cursor() as cur:
@@ -55,7 +55,7 @@ def get_listings_by_category(category):
 # Report a given listing
 def report_listing(listing_id, reason, reported_by):
 
-    conn = get_db_connection()
+    conn = connect_database()
     try:
         with conn.cursor() as cur:
             # Check if the listing exists in the database
@@ -83,7 +83,7 @@ def create_listing(user_id, category, description, image_url=None):
     if category not in ALLOWED_CATEGORIES:
         raise ValueError("Invalid category")
     
-    conn = get_db_connection()
+    conn = connect_database()
     try:
         with conn.cursor() as cur:
             cur.execute(
@@ -104,7 +104,7 @@ def create_listing(user_id, category, description, image_url=None):
 # Allow listing owner to update an existing listing
 def edit_listing(listing_id, user_id, new_description=None, new_image_url=None):
 
-    conn = get_db_connection()
+    conn = connect_database()
     try:
         with conn.cursor() as cur:
             # Verify listing existence and ownership
@@ -136,7 +136,7 @@ def edit_listing(listing_id, user_id, new_description=None, new_image_url=None):
 # Allow listing owner to delete a listing
 def delete_listing(listing_id, user_id):
 
-    conn = get_db_connection()
+    conn = connect_database()
     try:
         with conn.cursor() as cur:
             # Retrieve the category for cache invalidation
@@ -160,7 +160,7 @@ def delete_listing(listing_id, user_id):
 # Allow user to view all listings owned
 def view_user_listings(user_id):
 
-    conn = get_db_connection()
+    conn = connect_database()
     try:
         with conn.cursor() as cur:
             # Retrieve all listings for the given user_id
@@ -197,7 +197,7 @@ def view_user_listings(user_id):
 # Add a claim to a listing
 def add_claim(listing_id, claimed_by, message=""):
 
-    conn = get_db_connection()
+    conn = connect_database()
     try:
         with conn.cursor() as cur:
             # Check if the listing exists
