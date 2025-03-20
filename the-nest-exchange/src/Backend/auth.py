@@ -36,6 +36,7 @@ def sign_up():
         #Else user can be added into db and will be taken to login screen after signing up
         new_user = users(email=email)
         new_user.set_password(password)
+        connection.session.add(new_user)
         connection.session.commit()
         connection.close()
         session['email'] = email
