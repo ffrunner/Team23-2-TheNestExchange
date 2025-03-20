@@ -11,7 +11,7 @@ def login():
     connection = connect_database()
     email = request.form['email']
     password = request.form['password']
-    user = users.query.filter_by(email = email).first()
+    user = Users.query.filter_by(email = email).first()
     #If correct email and password, begins session and takes user to dashboard
     if user and user.check_password(password):
         session['email'] = email
@@ -27,7 +27,7 @@ def sign_up():
     connection = connect_database()
     email = request.form['email']
     password = request.form['password']
-    user = users.query.filter_by(email=email).first()
+    user = Users.query.filter_by(email=email).first()
     #If user is already in db, cannot be added again. 
     if user:
         connection.close()
@@ -48,7 +48,7 @@ def change_password():
     connection = connect_database()
     email = request.form['email']
     password = request.form['password']
-    user = users.query.filter_by(email = email).first()
+    user = Users.query.filter_by(email = email).first()
     #If correct email and password, can change password
     if user and user.check_password(password):
          new_password = request.form(new_password)
