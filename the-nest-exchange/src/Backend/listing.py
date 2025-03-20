@@ -1,6 +1,8 @@
 import json
 import redis
 from database_connect import connect_database
+from users_model import Listings
+
 
 # Configure Redis client
 redis_client = redis.Redis(host='database-1.cjm0e6m6u6vm.us-east-2.rds.amazonaws.com', port=5432, decode_responses=True)

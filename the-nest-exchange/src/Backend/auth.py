@@ -51,16 +51,10 @@ def change_password():
     user = users.query.filter_by(email = email).first()
     #If correct email and password, can change password
     if user and user.check_password(password):
-        new_password = request.form(new_password)
-        confirm_password = request.form(confirm_password)
-        if new_password = confirm_password:
-            user.set_password(new_password)
-            connection.session.commit()
-            connection.close()
-            return "Password successfully changed"
-        else:
-            return "Passwords do not match"
-            connection.close()
+         new_password = request.form(new_password)
+         user.set_password(new_password)
+         connection.session.commit()
+         connection.close()
     else:
         connection.close()
         return "Invalid credentials"
@@ -70,30 +64,4 @@ def change_password():
 def logout():
     session.pop('email', None)
     return redirect(url_for('login.js'))
-
-@auth.route('/item', methods=['POST'])
-def create_item():
-    data = request.json
-    new_item = Item(
-        title=data['title'],
-        description=data.get('description', ''),
-        category_id=data.get('category_id'),  
-        is_active=True,
-        lister_id=data['lister_id']  
-    )
-    db.session.add(new_item)
-    db.session.commit()
-    return jsonify({"msg": "Item created successfully!", "item_id": new_item.id}), 201
-
-@auth.route('/item/<int:item_id>', methods=['PUT'])
-def update_item(item_id):
-    item = Item.query.get_or_404(item_id)
-    data = request.json
-    item.title = data.get('title', item.title)  # Update only if provided
-    item.description = data.get('description', item.description)
-    item.category_id = data.get('category_id', item.category_id)
-    item.is_active = data.get('is_active', item.is_active)
-
-    db.session.commit()
-    return jsonify({"msg": "Item updated successfully!"}), 200
 
