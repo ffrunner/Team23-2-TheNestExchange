@@ -5,7 +5,6 @@ import redis
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] =  'postgresql+psycopg2://{user}:{password}@{host}/{database}'
 db = SQLAlchemy(app)
 
 app.register_blueprint(auth)
