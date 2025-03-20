@@ -1,5 +1,5 @@
 import unittest
-from app import app, db, User
+from app import app
 
 class AuthTestCase(unittest.TestCase):
 
