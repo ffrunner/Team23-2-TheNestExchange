@@ -1,6 +1,6 @@
 from database_connect import connect_database
 from flask import Blueprint, render_template, request, session, redirect, url_for
-from users_model import users
+from users_model import Users
 
 
 auth = Blueprint('auth',__name__)
