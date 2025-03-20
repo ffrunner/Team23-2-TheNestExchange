@@ -1,4 +1,4 @@
-from config.database_connect import connect_database
+from database_connect import connect_database
 from flask import Blueprint, render_template, request, session, redirect, url_for
 from users_model import users
 
