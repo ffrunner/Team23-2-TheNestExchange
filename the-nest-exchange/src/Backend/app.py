@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import redis
-from users_model import db, User
+
 
 
 app = Flask(__name__)
