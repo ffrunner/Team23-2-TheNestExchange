@@ -1,6 +1,7 @@
-from config.database_connect import connect_database
-from flask import Blueprint, render_template, request, session, redirect, url_for,jsonify
-from users_model import users, Item, db
+from database_connect import connect_database
+from flask import Blueprint, render_template, request, session, redirect, url_for
+from users_model import users
+
 
 auth = Blueprint('auth',__name__)
 
@@ -35,6 +36,7 @@ def sign_up():
         #Else user can be added into db and will be taken to login screen after signing up
         new_user = users(email=email)
         new_user.set_password(password)
+        connection.session.add(new_user)
         connection.session.commit()
         connection.close()
         session['email'] = email
@@ -50,9 +52,15 @@ def change_password():
     #If correct email and password, can change password
     if user and user.check_password(password):
         new_password = request.form(new_password)
-        user.set_password(new_password)
-        connection.session.commit()
-        connection.close()
+        confirm_password = request.form(confirm_password)
+        if new_password = confirm_password:
+            user.set_password(new_password)
+            connection.session.commit()
+            connection.close()
+            return "Password successfully changed"
+        else:
+            return "Passwords do not match"
+            connection.close()
     else:
         connection.close()
         return "Invalid credentials"
