@@ -6,7 +6,7 @@ class ListingTestCase(unittest.TestCase):
   def setUp(self):
     # Configure the app for testing
     app.config['TESTING'] = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Team23_2@localhost/test_db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://myuser:mypassword@localhost/mydatabase'
     self.client = app.test_client()
 
     # Create tables in the test database
