@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 from users_model import Users
 
 
-auth = Blueprint('auth',__name__)
+auth_bp = Blueprint('auth',__name__)
 
 #Login function that searches db for email and password. 
 @auth.route('/login', methods=["POST"])
