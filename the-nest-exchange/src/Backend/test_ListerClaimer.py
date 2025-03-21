@@ -26,6 +26,21 @@ class ListingTestCase(unittest.TestCase):
     self.assertGreaterEqual(len(data), 1)
 
   def test_report_listing(self):
+    payload = {
+      "listing_id": self.listing_id,
+      "reason": "Inappropriate content",
+      "reported_by": 1
+    }
+    response = self.client.post('/listings/report', data=json.dumps(payload), content_type='application/json')
+    self.assertEqual(response.status_code, 200)
+    data = json.loads(response.data)
+    self.assertEqual(data["message"], "Report submitted")
+
+    # Check that the report record was created in the database
+    with app.app_context():
+      result = db.session.execute("SELECT COUNT(*) FROM reports WHERE listing_id = :lid", {'lid': self.listing_id})
+      count = result.scalar()
+      self.assertGreaterEqual(count, 1)
 
   def test_create_listing(self):
     payload = {
@@ -57,6 +72,12 @@ class ListingTestCase(unittest.TestCase):
     self.assertEqual(data["message"], "Listing removed")
 
   def test_view_user_listings(self):
+    response = self.client.get('/listings/user/10')
+    self.assertEqual(response.status_code, 200)
+    data = json.loads(response.data)
+    self.assertIn("listings", data)
+    listing_ids = [listing["id"] for listing in data["listings"]]
+    self.assertIn(self.listing_id, listing_ids)
 
   def test_add_claim(self):
     claim_payload = {
