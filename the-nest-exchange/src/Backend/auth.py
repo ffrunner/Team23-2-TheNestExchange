@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 from users_model import Users
 
 
-auth_bp = Blueprint('auth',__name__)
+auth = Blueprint('auth',__name__)
 
 #Login function that searches db for email and password. 
 @auth.route('/login', methods=["POST"])
@@ -34,7 +34,7 @@ def sign_up():
         return "User already exists"
     else:
         #Else user can be added into db and will be taken to login screen after signing up
-        new_user = users(email=email)
+        new_user = Users(email=email)
         new_user.set_password(password)
         connection.session.add(new_user)
         connection.session.commit()
